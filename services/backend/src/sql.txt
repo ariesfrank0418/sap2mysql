@@ -1,0 +1,45 @@
+CREATE TABLE `sys_cond_config` (
+  `tab_name` char(30) NOT NULL COMMENT '表名',
+  `date_field` char(30) DEFAULT NULL COMMENT '日期字段',
+  PRIMARY KEY (`tab_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='更新条件配置表';
+
+CREATE TABLE `sys_sap_config` (
+  `sys_des` char(100) NOT NULL COMMENT '系统描述',
+  `sys_id` char(10) DEFAULT NULL COMMENT '系统ID',
+  `sys_instence` char(10) DEFAULT NULL COMMENT '实例号',
+  `sys_router` char(200) DEFAULT NULL COMMENT '路由字符串',
+  `sys_app_server` char(200) DEFAULT NULL COMMENT '应用服务器',
+  `sys_client` char(3) DEFAULT NULL COMMENT '登录客户端',
+  `sys_user` char(50) DEFAULT NULL COMMENT '登录用户名',
+  `sys_pw` varchar(200) DEFAULT NULL COMMENT '登录密码',
+  PRIMARY KEY (`sys_des`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='SAP登录信息配置表';
+
+CREATE TABLE `sys_tab_log` (
+  `task_id` char(36) NOT NULL COMMENT '任务ID',
+  `tabupdate_id` char(36) NOT NULL,
+  `tab_name` char(30) NOT NULL COMMENT '表名',
+  `date_field` char(30) DEFAULT NULL COMMENT '日期字段',
+  `date_from` char(8) DEFAULT NULL COMMENT '日期开始',
+  `date_to` char(8) DEFAULT NULL COMMENT '日期结束',
+  `add_where` varchar(200) DEFAULT NULL COMMENT '附加条件',
+  `start_time` datetime DEFAULT NULL COMMENT '执行开始时间',
+  `execution_time` int DEFAULT NULL COMMENT '执行时间',
+  `status` enum('未开始','进行中','已完成','错误') DEFAULT NULL COMMENT '执行状态',
+  `count` int DEFAULT NULL COMMENT '更新条目数',
+  `msg` varchar(200) DEFAULT NULL COMMENT '消息',
+  PRIMARY KEY (`task_id`,`tab_name`,`tabupdate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='表更新Log表';
+
+CREATE TABLE `sys_task_log` (
+  `task_id` char(36) NOT NULL COMMENT '任务ID',
+  `task_name` char(50) DEFAULT NULL COMMENT '任务名',
+  `scheduled_time` datetime DEFAULT NULL COMMENT '计划执行时间',
+  `interval` int DEFAULT NULL,
+  `task_type` enum('预定任务','即时任务','周期任务') DEFAULT NULL COMMENT '任务类型',
+  `execution_time` int DEFAULT NULL COMMENT '执行时间',
+  `status` enum('未开始','进行中','已完成','错误','已关闭') DEFAULT NULL COMMENT '执行状态',
+  `msg` varchar(200) DEFAULT NULL COMMENT '消息',
+  PRIMARY KEY (`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='任务Log表';
